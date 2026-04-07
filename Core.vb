@@ -52,7 +52,21 @@ Public Module CoreModule
             Console.ReadLine()
          End If
       Catch ExceptionO As Exception
-         HandleError(ExceptionO)
+         DisplayException(ExceptionO)
+      End Try
+   End Sub
+
+   'This procedure displays any exceptions that occor.
+   Private Sub DisplayException(ExceptionO As Exception)
+      Try
+         Console.ForegroundColor = ConsoleColor.Red
+         Console.WriteLine()
+         Console.WriteLine($"Error: {ExceptionO.Message}")
+         Console.WriteLine("Press Enter to continue...")
+         Console.ReadLine()
+         Console.ResetColor()
+      Catch
+         [Exit](0)
       End Try
    End Sub
 
@@ -69,7 +83,7 @@ Public Module CoreModule
 
          Return Choice
       Catch ExceptionO As Exception
-         HandleError(ExceptionO)
+         DisplayException(ExceptionO)
       End Try
 
       Return Nothing
@@ -80,7 +94,7 @@ Public Module CoreModule
       Try
          Return New List(Of Principal)(User.GetGroups)
       Catch ExceptionO As Exception
-         HandleError(ExceptionO)
+         DisplayException(ExceptionO)
       End Try
 
       Return Nothing
@@ -91,25 +105,11 @@ Public Module CoreModule
       Try
          Return New List(Of Principal)((New PrincipalSearcher() With {.QueryFilter = New UserPrincipal(Environment) With {.Name = "*"}}).FindAll())
       Catch ExceptionO As Exception
-         HandleError(ExceptionO)
+         DisplayException(ExceptionO)
       End Try
 
       Return Nothing
    End Function
-
-   'This procedure handles any errors that occor.
-   Private Sub HandleError(ExceptionO As Exception)
-      Try
-         Console.ForegroundColor = ConsoleColor.Red
-         Console.WriteLine()
-         Console.WriteLine($"Error: {ExceptionO.Message}")
-         Console.WriteLine("Press Enter to continue...")
-         Console.ReadLine()
-         Console.ResetColor()
-      Catch
-         [Exit](0)
-      End Try
-   End Sub
 
    'This procedure saves the specified user's group data.
    Private Sub SaveGroupData(UserName As String, GroupList As List(Of Principal), PathO As String)
@@ -123,7 +123,7 @@ Public Module CoreModule
 
          GroupTable.WriteXml(Path.Combine(PathO, UserName & ".xml"))
       Catch ExceptionO As Exception
-         HandleError(ExceptionO)
+         DisplayException(ExceptionO)
       End Try
    End Sub
 
@@ -145,7 +145,7 @@ Public Module CoreModule
             Console.ResetColor()
          End If
       Catch ExceptionO As Exception
-         HandleError(ExceptionO)
+         DisplayException(ExceptionO)
       End Try
    End Sub
 End Module
